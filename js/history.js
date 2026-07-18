@@ -1,68 +1,4 @@
-function applyDateFilter(){
-
-const user = localStorage.getItem("currentUser")
-
-let transactions = JSON.parse(
-localStorage.getItem("transactions_" + user)
-) || []
-
-const filter = document.getElementById("dateFilter").value
-const customDate = document.getElementById("customDate")
-
-const today = new Date()
-
-if(filter === "custom"){
-
-customDate.style.display = "inline-block"
-
-const selected = new Date(customDate.value)
-
-transactions = transactions.filter(t=>{
-const d = new Date(t.date)
-return d.toDateString() === selected.toDateString()
-})
-
-}
-
-else{
-
-customDate.style.display = "none"
-
-if(filter === "today"){
-
-transactions = transactions.filter(t=>{
-const d = new Date(t.date)
-return d.toDateString() === today.toDateString()
-})
-
-}
-
-if(filter === "week"){
-
-const weekStart = new Date()
-weekStart.setDate(today.getDate()-7)
-
-transactions = transactions.filter(t=>{
-return new Date(t.date) >= weekStart
-})
-
-}
-
-if(filter === "month"){
-
-transactions = transactions.filter(t=>{
-const d = new Date(t.date)
-return d.getMonth() === today.getMonth() &&
-d.getFullYear() === today.getFullYear()
-})
-
-}
-
-}
-
-renderSheet(transactions)
-
-}
+// Note: applyDateFilter was moved to transaction.js to align with sheet.html loads.
 
 function loadHistoryYearFilter(){
 
@@ -169,11 +105,11 @@ const monthlyData = {};
 
 transactions.forEach(t=>{
 
-const d = new Date(t.date);
+const [y, m, d] = t.date.split("-").map(Number);
 
-if(d.getFullYear() !== year) return;
+if(y !== year) return;
 
-const month = d.getMonth();
+const month = m - 1;
 
 if(!monthlyData[month]){
 monthlyData[month] = {income:0,expense:0};
@@ -221,7 +157,8 @@ const yearlyData = {};
 
 transactions.forEach(t=>{
 
-const year = new Date(t.date).getFullYear();
+const [y, m, d] = t.date.split("-").map(Number);
+const year = y;
 
 if(!yearlyData[year]){
 yearlyData[year] = {income:0,expense:0};

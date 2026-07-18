@@ -103,10 +103,12 @@ const label = document.getElementById("navMonthLabel");
 if(label){
 label.addEventListener("click", function(){
 
-if(picker.showPicker){
-picker.showPicker();
-}else{
-picker.click();
+if (picker) {
+    if(picker.showPicker){
+        picker.showPicker();
+    }else{
+        picker.click();
+    }
 }
 
 });

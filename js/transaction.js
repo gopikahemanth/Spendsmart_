@@ -586,3 +586,279 @@ function initAvatarSelection() {
     });
 
 }
+
+// ============================================================
+// TRANSACTION SHEET LOGIC
+// ============================================================
+
+let dateSortOrder = "desc";
+
+function loadTransactionSheet() {
+    const searchInput = document.getElementById("searchInput");
+    const typeFilter = document.getElementById("typeFilter");
+    const monthFilter = document.getElementById("monthFilter");
+
+    if (searchInput) {
+        searchInput.addEventListener("input", applyDateFilter);
+    }
+    if (typeFilter) {
+        typeFilter.addEventListener("change", applyDateFilter);
+    }
+    if (monthFilter) {
+        monthFilter.addEventListener("change", applyDateFilter);
+    }
+
+    applyDateFilter();
+}
+
+function applyDateFilter() {
+    const user = localStorage.getItem("currentUser");
+    if (!user) return;
+
+    let transactions = getTransactions();
+
+    // 1. Search Category Filter
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput && searchInput.value.trim() !== "") {
+        const query = searchInput.value.trim().toLowerCase();
+        transactions = transactions.filter(t => 
+            (t.category || "Other").toLowerCase().includes(query)
+        );
+    }
+
+    // 2. Type Filter
+    const typeFilter = document.getElementById("typeFilter");
+    if (typeFilter && typeFilter.value !== "all") {
+        const type = typeFilter.value;
+        transactions = transactions.filter(t => t.type === type);
+    }
+
+    // 3. Date Select Filter
+    const dateFilter = document.getElementById("dateFilter");
+    const customDate = document.getElementById("customDate");
+    const today = new Date();
+
+    if (dateFilter) {
+        const filterVal = dateFilter.value;
+        if (filterVal === "custom") {
+            if (customDate) {
+                customDate.style.display = "inline-block";
+                const selectedVal = customDate.value;
+                if (selectedVal) {
+                    transactions = transactions.filter(t => t.date === selectedVal);
+                }
+            }
+        } else {
+            if (customDate) customDate.style.display = "none";
+
+            if (filterVal === "today") {
+                const todayStr = today.getFullYear() + "-" +
+                    String(today.getMonth() + 1).padStart(2, '0') + "-" +
+                    String(today.getDate()).padStart(2, '0');
+                transactions = transactions.filter(t => t.date === todayStr);
+            } else if (filterVal === "week") {
+                const weekStart = new Date();
+                weekStart.setDate(today.getDate() - 7);
+                weekStart.setHours(0, 0, 0, 0);
+
+                transactions = transactions.filter(t => {
+                    const [y, m, d] = t.date.split("-").map(Number);
+                    const tDate = new Date(y, m - 1, d);
+                    return tDate >= weekStart;
+                });
+            } else if (filterVal === "month") {
+                transactions = transactions.filter(t => {
+                    const [y, m, d] = t.date.split("-").map(Number);
+                    return (m - 1) === today.getMonth() && y === today.getFullYear();
+                });
+            }
+        }
+    }
+
+    // 4. Month Picker Filter
+    const monthFilter = document.getElementById("monthFilter");
+    if (monthFilter && monthFilter.value) {
+        const [filterYear, filterMonth] = monthFilter.value.split("-").map(Number);
+        transactions = transactions.filter(t => {
+            const [y, m, d] = t.date.split("-").map(Number);
+            return y === filterYear && m === filterMonth;
+        });
+    }
+
+    // 5. Apply Date Sorting
+    transactions.sort((a, b) => {
+        const timeA = new Date(a.date + "T00:00:00").getTime();
+        const timeB = new Date(b.date + "T00:00:00").getTime();
+        if (timeA === timeB) {
+            return dateSortOrder === "desc" ? b.id - a.id : a.id - b.id;
+        }
+        return dateSortOrder === "desc" ? timeB - timeA : timeA - timeB;
+    });
+
+    renderSheet(transactions);
+}
+
+function renderSheet(transactions) {
+    const table = document.getElementById("transactionTable");
+    if (!table) return;
+
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    if (transactions.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No transactions found.</td></tr>`;
+        return;
+    }
+
+    transactions.forEach(t => {
+        const tr = document.createElement("tr");
+
+        const dateCell = formatDateLabel(t.date);
+        
+        let timeCell = "—";
+        if (t.id) {
+            const timeObj = new Date(t.id);
+            if (!isNaN(timeObj)) {
+                timeCell = timeObj.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+
+        const typeColor = t.type === "income" ? "green" : "red";
+        const typeLabel = t.type === "income" ? "Income" : "Expense";
+        const amountPrefix = t.type === "income" ? "+" : "-";
+
+        tr.innerHTML = `
+            <td>${dateCell}</td>
+            <td>${timeCell}</td>
+            <td>${t.title}</td>
+            <td><span style="color:${typeColor}; font-weight:600;">${typeLabel}</span></td>
+            <td>${t.category || "Other"}</td>
+            <td><span style="color:${typeColor}; font-weight:600;">${amountPrefix}${formatCurrency(t.amount)}</span></td>
+            <td>
+                <button onclick="deleteTransaction(${t.id})" class="delete-btn" style="background:#e74c3c; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">
+                    Delete
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function deleteTransaction(id) {
+    if (!confirm("Are you sure you want to delete this transaction?")) return;
+
+    let transactions = getTransactions();
+    transactions = transactions.filter(t => t.id !== id);
+    saveTransactions(transactions);
+
+    if (typeof showToast === "function") showToast("Transaction deleted successfully!");
+
+    applyDateFilter();
+}
+
+function sortByDate() {
+    dateSortOrder = dateSortOrder === "desc" ? "asc" : "desc";
+    applyDateFilter();
+}
+
+function exportSheetCSV() {
+    const user = localStorage.getItem("currentUser");
+    if (!user) return;
+
+    let transactions = getTransactions();
+
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput && searchInput.value.trim() !== "") {
+        const query = searchInput.value.trim().toLowerCase();
+        transactions = transactions.filter(t => 
+            (t.category || "Other").toLowerCase().includes(query)
+        );
+    }
+
+    const typeFilter = document.getElementById("typeFilter");
+    if (typeFilter && typeFilter.value !== "all") {
+        const type = typeFilter.value;
+        transactions = transactions.filter(t => t.type === type);
+    }
+
+    const dateFilter = document.getElementById("dateFilter");
+    const customDate = document.getElementById("customDate");
+    const today = new Date();
+
+    if (dateFilter) {
+        const filterVal = dateFilter.value;
+        if (filterVal === "custom") {
+            if (customDate) {
+                const selectedVal = customDate.value;
+                if (selectedVal) {
+                    transactions = transactions.filter(t => t.date === selectedVal);
+                }
+            }
+        } else {
+            if (filterVal === "today") {
+                const todayStr = today.getFullYear() + "-" +
+                    String(today.getMonth() + 1).padStart(2, '0') + "-" +
+                    String(today.getDate()).padStart(2, '0');
+                transactions = transactions.filter(t => t.date === todayStr);
+            } else if (filterVal === "week") {
+                const weekStart = new Date();
+                weekStart.setDate(today.getDate() - 7);
+                weekStart.setHours(0, 0, 0, 0);
+
+                transactions = transactions.filter(t => {
+                    const [y, m, d] = t.date.split("-").map(Number);
+                    const tDate = new Date(y, m - 1, d);
+                    return tDate >= weekStart;
+                });
+            } else if (filterVal === "month") {
+                transactions = transactions.filter(t => {
+                    const [y, m, d] = t.date.split("-").map(Number);
+                    return (m - 1) === today.getMonth() && y === today.getFullYear();
+                });
+            }
+        }
+    }
+
+    const monthFilter = document.getElementById("monthFilter");
+    if (monthFilter && monthFilter.value) {
+        const [filterYear, filterMonth] = monthFilter.value.split("-").map(Number);
+        transactions = transactions.filter(t => {
+            const [y, m, d] = t.date.split("-").map(Number);
+            return y === filterYear && m === filterMonth;
+        });
+    }
+
+    transactions.sort((a, b) => {
+        const timeA = new Date(a.date + "T00:00:00").getTime();
+        const timeB = new Date(b.date + "T00:00:00").getTime();
+        if (timeA === timeB) {
+            return dateSortOrder === "desc" ? b.id - a.id : a.id - b.id;
+        }
+        return dateSortOrder === "desc" ? timeB - timeA : timeA - timeB;
+    });
+
+    let csv = "Date,Time,Title,Type,Category,Amount\n";
+
+    transactions.forEach(t => {
+        let timeStr = "—";
+        if (t.id) {
+            const timeObj = new Date(t.id);
+            if (!isNaN(timeObj)) {
+                timeStr = timeObj.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+        csv += `"${t.date}","${timeStr}","${t.title}","${t.type}","${t.category || "Other"}",${t.amount}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "transaction_sheet.csv";
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+}

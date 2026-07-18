@@ -43,7 +43,7 @@ input.value = "";
 // refresh UI
 loadCurrent();
 loadHistory();
-loadDashboard();
+if(typeof loadDashboard === "function") loadDashboard();
 
 }
 
@@ -59,10 +59,10 @@ let spent = 0;
 
 transactions.forEach(t => {
 
-const d = new Date(t.date);
+const [y, m, d] = t.date.split("-").map(Number);
 
 // use the function parameters
-if(d.getMonth() === month && d.getFullYear() === year){
+if((m - 1) === month && y === year){
 
 if(t.type === "expense"){
 spent += Number(t.amount);

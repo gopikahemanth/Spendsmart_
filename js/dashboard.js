@@ -36,8 +36,8 @@ list.innerHTML = "";
 
 // ⭐ filter current month transactions
 const monthlyTransactions = transactions.filter(t => {
-const d = new Date(t.date);
-return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+const [y, m, d] = t.date.split("-").map(Number);
+return (m - 1) === currentMonth && y === currentYear;
 });
 
 // ⭐ calculate monthly income & expense
@@ -84,7 +84,11 @@ document.getElementById("totalBalance").innerText = formatCurrency(income - expe
 
 // ⭐ charts only for current month
 loadCategoryChart(monthlyTransactions);
-loadMonthlyChart(monthlyTransactions);
+const yearlyTransactions = transactions.filter(t => {
+const [y, m, d] = t.date.split("-").map(Number);
+return y === currentYear;
+});
+loadMonthlyChart(yearlyTransactions);
 
 loadCurrent();
 updateMonthLabel();
@@ -162,7 +166,8 @@ const monthlyIncome = new Array(12).fill(0);
 const monthlyExpense = new Array(12).fill(0);
 transactions.forEach(t=>{
 
-const month = new Date(t.date).getMonth();
+const [y, m, d] = t.date.split("-").map(Number);
+const month = m - 1;
 
 if(t.type === "income"){
 monthlyIncome[month] += Number(t.amount);
