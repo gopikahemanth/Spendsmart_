@@ -1,0 +1,13 @@
+<svg width="42" height="42" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="
+    M60 18
+    Q40 20 55 35
+    Q70 48 50 55
+    Q30 62 60 82
+  "
+    fill="none"
+    stroke="white"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</svg>

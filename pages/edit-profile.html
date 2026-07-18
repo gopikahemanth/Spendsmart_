@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile - SpendSmart</title>
+
+    <!-- ✅ FIX -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <h1>Edit Profile</h1>
+
+    <div class="profile-card">
+
+       <div class="profile-avatar-section">
+
+    <!-- Selected avatar -->
+    <div class="avatar-large" id="editAvatar"></div>
+
+    <!-- Avatar choices -->
+    <div class="avatar-grid">
+
+        <!-- ✅ FIX IMAGE PATHS -->
+        <img src="../assets/avatar1.jpeg" onclick="selectAvatar('avatar1.jpeg',this)">
+        <img src="../assets/avatar2.jpeg" onclick="selectAvatar('avatar2.jpeg',this)">
+        <img src="../assets/avatar3.jpeg" onclick="selectAvatar('avatar3.jpeg',this)">
+        <img src="../assets/avatar4.jpeg" onclick="selectAvatar('avatar4.jpeg',this)">
+        <img src="../assets/avatar5.jpeg" onclick="selectAvatar('avatar5.jpeg',this)">
+
+        <img src="../assets/avatar6.jpeg" onclick="selectAvatar('avatar6.jpeg',this)">
+        <img src="../assets/avatar7.jpeg" onclick="selectAvatar('avatar7.jpeg',this)">
+        <img src="../assets/avatar8.jpeg" onclick="selectAvatar('avatar8.jpeg',this)">
+        <img src="../assets/avatar9.jpeg" onclick="selectAvatar('avatar9.jpeg',this)">
+        <img src="../assets/avatar10.jpeg" onclick="selectAvatar('avatar10.jpeg',this)">
+
+    </div>
+
+</div>
+
+        <label>Username</label>
+        <input type="text" id="editUsername"
+            onkeydown="if(event.key==='Enter'){ event.preventDefault(); saveProfile(); }">
+
+        <label>Name</label>
+        <input type="text" id="editName"
+            onkeydown="if(event.key==='Enter'){ event.preventDefault(); saveProfile(); }">
+
+        <button onclick="saveProfile()">Save Changes</button>
+
+    </div>
+</div>
+
+<!-- ✅ FIX -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const user = localStorage.getItem("currentUser");
+
+    if (!user) {
+        window.location.href = "login.html"; // ✅ same folder
+        return;
+    }
+
+    document.getElementById("editUsername").value = user;
+
+    const savedName = localStorage.getItem("name_" + user) || "";
+    document.getElementById("editName").value = savedName;
+
+    const avatarBox = document.getElementById("editAvatar");
+    const savedAvatar = localStorage.getItem("avatar_" + user);
+
+    if(savedAvatar){
+        avatarBox.innerHTML =
+        `<img src="../assets/${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    }else{
+        avatarBox.innerText = user.charAt(0).toUpperCase();
+    }
+
+    const avatars = document.querySelectorAll(".avatar-grid img");
+
+    avatars.forEach(img=>{
+        if(savedAvatar && img.src.includes(savedAvatar)){
+            img.classList.add("selected");
+        }
+    });
+
+});
+
+function saveProfile() {
+
+    const oldUser = localStorage.getItem("currentUser");
+    const newUsername = document.getElementById("editUsername").value.trim().toLowerCase();
+    const newName = document.getElementById("editName").value.trim();
+
+    // ✅ ONLY validate if username changed
+    if (newUsername !== oldUser) {
+
+        const usernameRegex = /^(?!.*\.\.)(?!\.)(?!.*\.$)[a-z0-9._]{3,20}$/;
+
+        if (!usernameRegex.test(newUsername)) {
+            showToast("Invalid username format");
+            return;
+        }
+
+        if (localStorage.getItem("user_" + newUsername)) {
+            showToast("Username already taken!");
+            return;
+        }
+
+        // 🔁 migrate data
+        const password = localStorage.getItem("user_" + oldUser);
+
+        localStorage.removeItem("user_" + oldUser);
+        localStorage.setItem("user_" + newUsername, password);
+
+        const transactions = localStorage.getItem("transactions_" + oldUser);
+        if (transactions) {
+            localStorage.setItem("transactions_" + newUsername, transactions);
+            localStorage.removeItem("transactions_" + oldUser);
+        }
+
+        localStorage.setItem("currentUser", newUsername);
+    }
+
+    // ✅ save name always
+    localStorage.setItem("name_" + (newUsername || oldUser), newName);
+
+    loadNavbarUser();
+
+    showToast("Profile updated successfully!");
+
+    window.location.href = "profile.html";
+}
+</script>
+
+</body>
+</html>

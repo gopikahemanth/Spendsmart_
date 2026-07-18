@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>All Transactions</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <span>SpendSmart</span>
+    </div>
+    <div class="nav-links">
+        <a href="dashboard.html">Back</a>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h2 style="margin-bottom:20px;">Transaction Sheet</h2>
+
+  <div class="sheet-controls">
+
+<input type="text" id="searchInput" placeholder="Search category...">
+
+<select id="typeFilter">
+<option value="all">All Types</option>
+<option value="income">Income</option>
+<option value="expense">Expense</option>
+</select>
+
+<select id="dateFilter" onchange="applyDateFilter()">
+<option value="all">All Dates</option>
+<option value="today">Today</option>
+<option value="week">This Week</option>
+<option value="month">This Month</option>
+<option value="custom">Custom Date</option>
+</select>
+
+<input type="date" id="customDate" style="display:none;" onchange="applyDateFilter()">
+
+<input type="month" id="monthFilter">
+
+<button onclick="exportSheetCSV()">Export CSV</button>
+
+</div>
+
+    <div class="sheet-container">
+        <table id="transactionTable">
+            <thead>
+                <tr>
+                    <th onclick="sortByDate()">Date ⇅</th>
+                    <th>Time</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/transaction.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+loadTransactionSheet();
+</script>
+
+</body>
+</html>

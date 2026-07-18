@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Income Expense History • SpendSmart</title>
+
+<!-- ✅ FIX -->
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<section class="history-container">
+
+<h2>Income Expense History</h2>
+
+<div class="history-filters">
+<button onclick="loadMonthlyHistory()">Monthly</button>
+<button onclick="loadYearlyHistory()">Yearly</button>
+</div>
+
+<div class="history-controls">
+<select id="yearSelect" onchange="loadMonthlyHistory()"></select>
+</div>
+
+<table class="history-table">
+
+<thead>
+<tr>
+<th>Period</th>
+<th>Income</th>
+<th>Expense</th>
+<th>Balance</th>
+</tr>
+</thead>
+
+<tbody id="historyBody"></tbody>
+
+</table>
+
+<!-- ✅ ADD BACK BUTTON (better UX) -->
+<div style="margin-top:20px;">
+<a href="dashboard.html" class="primary-btn">← Back to Dashboard</a>
+</div>
+
+</section>
+
+<!-- ✅ FIX -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/history.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    loadMonthlyHistory();
+});
+</script>
+
+</body>
+</html>

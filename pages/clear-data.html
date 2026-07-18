@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Clear All Transactions • SpendSmart</title>
+
+<!-- ✅ FIXED CSS PATH -->
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+<h2>⚠ Clear All Transactions</h2>
+
+<p style="margin:15px 0;color:#666;">
+This will permanently delete all your transaction data.
+This action cannot be undone.
+</p>
+
+<button class="danger-btn" onclick="clearAllTransactions()">
+Delete All Transactions
+</button>
+
+<br><br>
+
+<a href="dashboard.html" class="cancel-link">Cancel</a>
+
+</div>
+
+<!-- ✅ ADD MAIN JS FILE -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/transaction.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+function clearAllTransactions(){
+
+    const user = localStorage.getItem("currentUser");
+
+    if(!user) return;
+
+    if(confirm("Are you sure you want to delete ALL transactions?")){
+
+        localStorage.removeItem("transactions_" + user);
+
+        alert("All transactions cleared");
+
+        window.location.href = "dashboard.html";
+    }
+}
+</script>
+
+</body>
+</html>

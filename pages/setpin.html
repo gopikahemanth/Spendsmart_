@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change PIN</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<form class="auth-container" onsubmit="event.preventDefault(); changePin();">
+
+<h2>Change PIN</h2>
+
+<input type="password" id="oldPin" placeholder="Old PIN (if exists)" maxlength="4">
+
+<input type="password" id="newPin" placeholder="New 4-digit PIN" maxlength="4" required>
+
+<input type="password" id="confirmPin" placeholder="Confirm New PIN" maxlength="4" required>
+
+<button type="submit">Update PIN</button>
+
+<p id="pinMessage" class="error"></p>
+
+<button type="button" onclick="window.location.href='dashboard.html'">Back</button>
+
+</form>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/pin.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

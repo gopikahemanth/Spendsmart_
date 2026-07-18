@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Monthly Budget • SpendSmart</title>
+
+<!-- ✅ FIXED CSS -->
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<div class="monthly-container">
+
+<a href="dashboard.html">
+<button class="back-btn">← Dashboard</button>
+</a>
+
+<h2>Monthly Budget</h2>
+
+<form class="budget-input-row" onsubmit="event.preventDefault(); saveBudget();">
+<input type="number" id="budgetInput" placeholder="Enter Monthly Budget" min="1">
+<button type="submit">Save Budget</button>
+</form>
+<button onclick="clearBudget()" class="clear-btn">
+    Clear This Month Budget
+</button>
+<div class="budget-cards">
+
+<div class="budget-card">
+<p>Budget</p>
+<h3 id="budgetValue">₹0</h3>
+</div>
+
+<div class="budget-card">
+<p>Spent</p>
+<h3 id="spentValue">₹0</h3>
+</div>
+
+<div class="budget-card">
+<p>Remaining</p>
+<h3 id="remainingValue">₹0</h3>
+</div>
+
+</div>
+
+<div class="budget-progress">
+
+<p id="progressText">0% of budget used</p>
+
+<div class="progress-bar">
+<div id="progressFill"></div>
+</div>
+
+</div>
+
+<div class="budget-history">
+
+<h3>Budget History</h3>
+
+<div class="year-filter">
+<select id="yearFilter"></select>
+<button class="show-btn" onclick="loadHistory()">Show</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Budget</th>
+<th>Spent</th>
+<th>Remaining</th>
+</tr>
+</thead>
+
+<tbody id="historyTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ✅ FIXED JS -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/budget.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

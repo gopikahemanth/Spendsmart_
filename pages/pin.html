@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter PIN</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Enter PIN</h2>
+
+    <input type="tel"
+           id="pinInput"
+           placeholder="Enter 4-digit PIN"
+           maxlength="4"
+           onkeyup="checkEnter(event)">
+
+    <button onclick="verifyPin()">Unlock</button>
+
+    <p id="pinError" class="error"></p>
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/pin.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome • SpendSmart</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- ===== NAVBAR (same as dashboard) ===== -->
+
+<nav class="navbar">
+
+<div class="logo">
+    <img src="../assets/logo.svg">
+<span>SpendSmart</span>
+</div>
+
+<div class="nav-right">
+
+<div class="nav-user">
+    <div class="nav-avatar" id="navAvatar"></div>
+    <span id="navHello"></span>
+</div>
+
+<a href="calendar.html" class="calendar-btn">📅</a>
+
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+<div class="dropdown-menu" id="dropdownMenu">
+
+<div class="menu-item">
+    <div class="menu-header" onclick="window.location.href='profile.html'">
+        👤 Profile
+    </div>
+</div>
+
+<div class="menu-item">
+    <div class="menu-header" onclick="toggleSection('securitySection')">
+        🔐 Security
+    </div>
+
+    <div class="submenu" id="securitySection">
+
+        <div onclick="window.location.href='change-password.html'">
+            Change Password
+        </div>
+
+        <div onclick="window.location.href='setpin.html'">
+            Set / Change PIN
+        </div>
+
+        <div onclick="removePin()">
+            Remove PIN
+        </div>
+
+        <div onclick="window.location.href='delete-account.html'" style="color:#e74c3c;">
+            Delete Account
+        </div>
+
+    </div>
+</div>
+
+<div class="menu-item">
+    <div class="menu-header" onclick="toggleSection('dataSection')">
+        📊 Data & Backup
+    </div>
+    <div class="submenu" id="dataSection">
+        <div onclick="exportCSV()">Export CSV</div>
+        <div>Backup JSON</div>
+        <div>Import Data</div>
+        <div onclick="window.location.href='clear-data.html'">
+            Clear All Transactions
+        </div>
+    </div>
+</div>
+
+<div class="menu-item">
+    <div class="menu-header" onclick="toggleSection('helpSection')">
+        ❓ Help & Info
+    </div>
+
+<div class="submenu" id="helpSection">
+
+<div onclick="window.location.href='about.html'">About SpendSmart</div>
+<div onclick="window.location.href='privacy.html'">Privacy Policy</div>
+<div onclick="window.location.href='contact.html'">Contact</div>
+
+<div>Version 1.0</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</nav>
+
+<!-- ===== WELCOME SECTION ===== -->
+
+<div class="welcome-container">
+
+<h1>👋 Welcome to SpendSmart</h1>
+<p>Manage your income and expenses smarter.</p>
+
+<a href="add.html" class="main-action">
++ Add Transaction
+</a>
+
+<div class="welcome-grid">
+
+<a href="dashboard.html" class="welcome-card">📊 Dashboard</a>
+<a href="monthly-budget.html" class="welcome-card">💰 Monthly Budget</a>
+<a href="sheet.html" class="welcome-card">📄 Transaction Sheet</a>
+<a href="history.html" class="welcome-card">📈 Monthly Income History</a>
+
+</div>
+
+</div>
+
+<div id="namePopup" class="popup-overlay" style="display: none;">
+
+<div class="popup-box">
+<h2>Welcome👋</h2>
+<p>Add Your Name<p>
+
+<input type="text" id="popupName" placeholder="Enter your name (optional)"
+    onkeydown="if(event.key==='Enter'){ event.preventDefault(); saveName(); }">
+
+<div class="popup-buttons">
+<button onclick="saveName()">Continue</button>
+<button onclick="skipName()">Skip</button>
+</div>
+
+</div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

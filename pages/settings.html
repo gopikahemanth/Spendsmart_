@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Settings</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Security Settings</h2>
+
+    <button onclick="window.location.href='setpin.html'">
+        Set / Change PIN
+    </button>
+
+    <button onclick="removePin()">
+        Remove PIN
+    </button>
+
+    <button onclick="window.location.href='dashboard.html'">
+        Back to Dashboard
+    </button>
+
+    <p id="settingsMsg" class="error"></p>
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

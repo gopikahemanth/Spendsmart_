@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Add Transaction - SpendSmart</title>
+
+<!-- ✅ FIXED CSS -->
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+
+<form class="auth-container" id="formStep" onsubmit="addTransaction(); return false;">
+    
+    <h2>Add Transaction</h2>
+
+    <div class="type-selector">
+        <button type="button" id="incomeBtn" class="active-income" onclick="selectType('income')">
+            Income
+        </button>
+
+        <button type="button" id="expenseBtn" onclick="selectType('expense')">
+            Expense
+        </button>
+    </div>
+
+    <input type="hidden" id="type" value="income">
+
+    <div id="transactionFields">
+
+        <input type="text" 
+               id="title" 
+               placeholder="Enter transaction title"
+               list="commonTitles"
+               autocomplete="off">
+
+        <datalist id="commonTitles"></datalist>
+
+        <select id="category"></select>
+
+        <input type="text" id="customCategory" 
+               placeholder="Enter custom category"
+               style="display:none;">
+
+        <input type="number"
+               id="amount"
+               placeholder="Amount"
+               min="1">
+
+        <button id="saveBtn" type="submit">
+            Save Transaction
+        </button>
+
+        <!-- ✅ FIXED LINK -->
+        <button onclick="window.location.replace('dashboard.html')"
+                style="margin-top:10px;">
+            Back to Dashboard
+        </button>
+
+        <p id="addError" class="error"></p>
+
+    </div>
+
+</form>
+
+<!-- ✅ FIXED JS -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/transaction.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

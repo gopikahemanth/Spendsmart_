@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Calendar - SpendSmart</title>
+
+<!-- ✅ FIXED CSS -->
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div class="card calendar-card">
+
+        <div class="calendar-header">
+
+            <button onclick="changeCalendarMonth(-1)" class="nav-arrow">&#9664;</button>
+
+            <div class="calendar-title">
+                <h2 id="monthYear"></h2>
+
+                <button onclick="openNativePicker()" class="calendar-icon">📅</button>
+
+                <!-- Hidden Native Date Picker -->
+                <input 
+                    type="date" 
+                    id="hiddenDatePicker"
+                    onchange="jumpToDate()"
+                    style="position:absolute; opacity:0; pointer-events:none;"
+                >
+            </div>
+
+            <button onclick="changeCalendarMonth(1)" class="nav-arrow">&#9654;</button>
+
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <a href="dashboard.html" class="primary-btn back-btn">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+</div>
+
+<!-- ✅ FIXED JS -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/calendar.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

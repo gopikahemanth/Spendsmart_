@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard - SpendSmart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- ✅ FIXED CSS PATH -->
+<link rel="stylesheet" href="../css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onbeforeunload="sessionStorage.removeItem('pinVerified')">
+
+<nav class="navbar">
+    <div class="logo">
+        <img src="../assets/logo.svg"> <!-- ✅ FIXED -->
+        <span>SpendSmart</span>
+    </div>
+
+    <div class="nav-right">
+
+        <div class="nav-user">
+            <div class="nav-avatar" id="navAvatar"></div>
+            <span id="navHello"></span>
+        </div>
+
+        <div class="nav-month">
+            <span id="navMonthLabel" onclick="toggleMonthDropdown()">
+                May 2026 ▼
+            </span>
+            <div id="monthDropdown" class="month-dropdown"></div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="calendar-icon-wrapper"
+             onclick="window.location.href='calendar.html'">
+            <span class="calendar-icon">📅</span>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+
+            <div class="menu-item">
+                <div class="menu-header" onclick="window.location.href='profile.html'">
+                    👤 Profile
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-header" onclick="toggleSection('securitySection')">
+                    🔐 Security
+                </div>
+
+                <div class="submenu" id="securitySection">
+                    <div onclick="window.location.href='change-password.html'">Change Password</div>
+                    <div onclick="window.location.href='setpin.html'">Set / Change PIN</div>
+                   <div onclick="removePin()" class="menu-item">
+    Remove PIN
+</div>
+                    <div onclick="window.location.href='delete-account.html'" style="color:#e74c3c;">
+                        Delete Account
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-header" onclick="toggleSection('dataSection')">
+                    📊 Data & Backup
+                </div>
+                <div class="submenu" id="dataSection">
+                    <div onclick="exportCSV()">Export CSV</div>
+                    <div>Backup JSON</div>
+                    <div>Import Data</div>
+                    <div onclick="window.location.href='clear-data.html'">
+                        Clear All Transactions
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-header" onclick="toggleSection('helpSection')">
+                    ❓ Help & Info
+                </div>
+
+                <div class="submenu" id="helpSection">
+                    <div onclick="window.location.href='about.html'">About SpendSmart</div>
+                    <div onclick="window.location.href='privacy.html'">Privacy Policy</div>
+                    <div onclick="window.location.href='contact.html'">Contact</div>
+                    <div>Version 1.0</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<section class="dashboard-container">
+
+    <!-- ✅ FIXED EXTRA DIV BUG -->
+    
+    <div class="cards">
+        <div class="card balance">
+            <h3>Total Balance</h3>
+            <h2 id="totalBalance">0</h2>
+        </div>
+
+        <div class="card income">
+            <h3>Total Income</h3>
+            <h2 id="totalIncome">0</h2>
+        </div>
+
+        <div class="card expense">
+            <h3>Total Expense</h3>
+            <h2 id="totalExpense">0</h2>
+        </div>
+    </div>
+
+    <div class="budget-section">
+        <h2>Monthly Budget</h2>
+
+        <div class="budget-cards">
+            <div class="budget-card">
+                <p>Budget</p>
+                <h3 id="budgetValue">₹0</h3>
+            </div>
+
+            <div class="budget-card">
+                <p>Spent</p>
+                <h3 id="spentValue">₹0</h3>
+            </div>
+
+            <div class="budget-card">
+                <p>Remaining</p>
+                <h3 id="remainingValue">₹0</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="add.html" class="action-btn">+ Add New Transaction</a>
+        <a href="monthly-budget.html" class="action-btn">Monthly Budget</a>
+        <a href="history.html" class="action-btn">📊 Monthly Income History</a>
+    </div>
+
+    <div class="charts-wrapper">
+        <div class="chart-box">
+            <h3>Monthly Overview</h3>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Spending by Category</h3>
+            <canvas id="financeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="transactions">
+        <h3>Recent Transactions</h3>
+        <div id="transactionList"></div>
+
+        <div style="margin-top:20px;">
+            <a href="sheet.html" class="primary-btn small">
+                View Full Transaction Sheet
+            </a>
+        </div>
+    </div>
+
+</section>
+
+<!-- ✅ FIXED JS PATH -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/dashboard.js"></script>
+<script src="../js/transaction.js"></script>
+<script src="../js/budget.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/pin.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    loadDashboard();
+});
+</script>
+</body>
+</html>

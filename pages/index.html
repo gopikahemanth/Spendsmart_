@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendSmart</title>
+
+<!-- ✅ FIX -->
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="logo">
+<a href="index.html">
+
+<!-- ✅ FIX -->
+<img src="../assets/logo.svg" alt="SpendSmart Logo">
+
+<span>SpendSmart</span>
+</a>
+</div>
+
+<div class="nav-links">
+<a href="#features">Features</a>
+<a href="#about">About</a>
+<a href="login.html">Login</a>
+<a href="register.html" class="register-link">Register</a>
+</div>
+
+</nav>
+
+
+<div class="main-container">
+<!-- HERO SECTION -->
+<section class="hero">
+
+<h1>Take Control of Your Money</h1>
+
+<p>A minimal, private and secure way to track your spending.</p>
+
+<div class="hero-buttons">
+
+<a href="register.html" class="primary-btn">Get Started</a>
+
+<a href="#features" class="secondary-btn">Learn More</a>
+
+</div>
+
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="features" id="features">
+
+<h2>Features</h2>
+
+<div class="features-grid">
+
+<div class="feature-card">
+<div class="feature-icon">🔒</div>
+<h3>Private & Secure</h3>
+<p>No emails or phone numbers required. Your data stays yours.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">💳</div>
+<h3>Track Expenses</h3>
+<p>Record and monitor your spending easily.</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">📊</div>
+<h3>Clear Insights</h3>
+<p>Understand your financial habits with simple views.</p>
+</div>
+</div>
+
+</section>
+
+
+<!-- DEMO SECTION -->
+<section class="preview-section">
+
+<h2>See SpendSmart in Action</h2>
+
+<div class="image-stack">
+
+<!-- ✅ FIX -->
+<img src="../assets/dashboard3.png" class="stack-img img1">
+<img src="../assets/dashboard2.png" class="stack-img img2">
+<img src="../assets/dashboard1.png" class="stack-img img3">
+
+</div>
+
+</section>
+
+
+<!-- ABOUT SECTION -->
+<section class="about" id="about">
+
+<h2>About SpendSmart</h2>
+
+<p>
+SpendSmart is a privacy-focused expense tracking application designed for simplicity and clarity.
+We believe managing money should be easy, distraction-free, and secure.
+</p>
+
+<p>
+No emails. No phone numbers. No unnecessary personal data.
+Your account is protected with a username and password, and your data stays safe.
+</p>
+
+<p>
+Built with clean design principles and modern web technologies, SpendSmart helps you
+develop better financial habits with confidence.
+</p>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+<div class="footer-content">
+
+<h3>SpendSmart</h3>
+
+<p>Simple private expense tracking</p>
+
+<div class="footer-links">
+
+<a href="privacy.html">Privacy Policy</a>
+<span>|</span>
+<a href="terms.html">Terms & Conditions</a>
+<span>|</span>
+<a href="about.html">About</a>
+<span>|</span>
+<a href="contact.html">Contact</a>
+</div>
+
+<p class="copyright">© 2026 SpendSmart</p>
+
+</div>
+
+</footer>
+
+<div id="consentOverlay" class="consent-overlay">
+
+<div class="consent-box">
+
+<h2>Privacy Notice</h2>
+
+<p>
+SpendSmart uses cookies and local storage to operate the application and store
+your financial data securely.
+By continuing you agree to our
+<a href="terms.html" target="_blank">Terms & Conditions</a>
+and
+<a href="privacy.html" target="_blank">Privacy Policy</a>.
+</p>
+
+<button class="allow-btn" onclick="acceptConsent()">Accept & Continue</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ✅ FIX -->
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+</body>
+</html>

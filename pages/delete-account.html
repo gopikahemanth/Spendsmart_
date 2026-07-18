@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Account - SpendSmart</title>
+
+    <!-- ✅ FIX -->
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+
+<div class="profile-container">
+    <h1 style="color:#e74c3c;">Delete Account</h1>
+
+    <div class="profile-card">
+
+        <p>This action is permanent and cannot be undone.</p>
+
+        <label>Username</label>
+        <input type="text" id="deleteUsername"
+            onkeydown="if(event.key==='Enter'){ event.preventDefault(); confirmDelete(); }">
+
+        <label>Password</label>
+        <input type="password" id="deletePassword"
+            onkeydown="if(event.key==='Enter'){ event.preventDefault(); confirmDelete(); }">
+
+        <label>Reason for deleting</label>
+        <select id="deleteReason" onchange="checkOtherReason()">
+            <option value="">Select Reason</option>
+            <option>Not useful</option>
+            <option>Privacy concerns</option>
+            <option>Switching to another app</option>
+            <option>Too complicated</option>
+            <option value="other">Other</option>
+        </select>
+
+        <input type="text" id="otherReason" placeholder="Enter your reason"
+               style="display:none; margin-top:10px;"
+               onkeydown="if(event.key==='Enter'){ event.preventDefault(); confirmDelete(); }">
+
+        <button class="danger-btn" onclick="confirmDelete()">
+            Permanently Delete
+        </button>
+
+    </div>
+</div>
+
+<script>
+
+function checkOtherReason() {
+    const reason = document.getElementById("deleteReason").value;
+    const otherInput = document.getElementById("otherReason");
+
+    if (reason === "other") {
+        otherInput.style.display = "block";
+    } else {
+        otherInput.style.display = "none";
+    }
+}
+
+function confirmDelete() {
+
+    const user = localStorage.getItem("currentUser");
+    const storedPassword = localStorage.getItem("user_" + user);
+
+    const enteredUsername = document.getElementById("deleteUsername").value;
+    const enteredPassword = document.getElementById("deletePassword").value;
+    const reason = document.getElementById("deleteReason").value;
+
+    if (enteredUsername !== user) {
+        alert("Username does not match.");
+        return;
+    }
+
+    if (enteredPassword !== storedPassword) {
+        alert("Password is incorrect.");
+        return;
+    }
+
+    if (!reason) {
+        alert("Please select a reason.");
+        return;
+    }
+
+    // Delete everything
+    localStorage.removeItem("user_" + user);
+    localStorage.removeItem("transactions_" + user);
+    localStorage.removeItem("pin_" + user);
+    localStorage.removeItem("name_" + user);
+    localStorage.removeItem("join_" + user);
+    localStorage.removeItem("currentUser");
+
+    alert("Your account has been deleted.");
+
+    <!-- ❗ IMPORTANT FIX -->
+    window.location.href = "../index.html";
+}
+</script>
+
+</body>
+</html>

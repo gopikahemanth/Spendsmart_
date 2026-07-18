@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile - SpendSmart</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <h1>Profile</h1>
+
+    <div class="profile-card">
+
+        <div class="profile-avatar-section">
+            <div class="avatar-large" id="profileAvatar">G</div>
+            <button onclick="window.location.href='edit-profile.html'">
+    Edit Profile
+</button>
+        </div>
+
+        <div class="profile-info">
+            <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+            <p><strong>Name:</strong> <span id="profileName"></span></p>
+            <p><strong>Member Since:</strong> <span id="profileMemberSince"></span></p>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">Logout</button>
+
+    </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const user = localStorage.getItem("currentUser");
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    document.getElementById("profileUsername").innerText = user;
+
+    const savedName = localStorage.getItem("name_" + user) || "Not Set";
+    document.getElementById("profileName").innerText = savedName;
+
+   const joinDate = localStorage.getItem("join_" + user) || 
+    new Date().toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+    document.getElementById("profileMemberSince").innerText = joinDate;
+
+const avatarBox = document.getElementById("profileAvatar");
+const savedAvatar = localStorage.getItem("avatar_" + user);
+
+if(savedAvatar){
+    avatarBox.innerHTML = `<img src="../assets/${savedAvatar}" style="width:100%;height:100%;border-radius:50%;">`;
+}else{
+    avatarBox.innerText = user.charAt(0).toUpperCase();
+}
+});
+
+function editProfile() {
+
+    const user = localStorage.getItem("currentUser");
+
+    const newName = prompt("Enter your name:");
+
+    if (newName && newName.trim() !== "") {
+        localStorage.setItem("name_" + user, newName.trim());
+        document.getElementById("profileName").innerText = newName.trim();
+    }
+}
+
+function logout() {
+    localStorage.removeItem("currentUser");
+    sessionStorage.clear();
+    window.location.href = "../pages/index.html";
+}
+</script>
+
+</body>
+</html>
